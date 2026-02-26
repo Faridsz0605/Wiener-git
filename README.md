@@ -1,5 +1,13 @@
 # what is this?
 
+<!--toc:start-->
+
+- [what is this?](#what-is-this)
+  - [but for real ?](#but-for-real)
+  - [Ill build it from scratch](#ill-build-it-from-scratch)
+  - [Getting started](#getting-started)
+  <!--toc:end-->
+
 If you ask me. ill genuately tell you i have no fucking clue. Chek the one who knoks at -> [here](https://wyag.thb.lt/)
 
 ## but for real ?
@@ -22,6 +30,6 @@ But if i repeated that 2 times and you still here maybe i can help with somethin
 
 now we must use the follow project tree ->
 
-```
+```bash
 
 ```
