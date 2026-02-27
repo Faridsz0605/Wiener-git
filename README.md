@@ -1,4 +1,4 @@
-````text
+```text
                                                                                              ___
                 ,--,                                                                ,--,   ,--.'|_
          .---.,--.'|                  ,---,             __  ,-.                   ,--.'|   |  | :,'
@@ -12,8 +12,8 @@
   \   \  |--" ;  :    ;|   :    |   |/      |   :    | ---'             .'__/\_: |;  :    ;|  ,   /
    \   \ |    |  ,   /  \   \  /'---'        \   \  /                   |   :    :|  ,   /  ---`-'
     '---"      ---`-'    `----'               `----'                     \   \  /  ---`-'
-                                                                          `--`-'                     ```
-
+                                                                          `--`-'
+```
 
 # wiener-git
 
@@ -81,10 +81,10 @@ _also used_ [Py-git](https://youtu.be/g2cfjDENSyw?si=q7kx6qKwxQ-MZEFk)
 
 1. **Clone the repository:**
 
-   ```bash
+```bash
    git clone https://github.com/your-username/wiener-git.git
    cd wiener-git
-````
+```
 
 1. **Environment Setup:**
    If you use [mise](https://mise.jdx.dev/), the environment will be set up automatically:
@@ -126,7 +126,7 @@ _Note: Commands are being actively implemented. Check [src/libwyag.py](src/libwy
 
 ---
 
-## 🗺️ Roadmap
+## Roadmap
 
 - [x] Repository initialization logic (`init`)
 - [ ] Object hashing and storage
@@ -142,4 +142,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-<p align="center">Made with 🌭 by a Colombian dev-in-the-making.</p>
+<p align="center">Everything is under the image of Wiener-hund studios which is not an official enterprise but is made from humans. should check out the repo</p>
