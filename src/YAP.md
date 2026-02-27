@@ -155,4 +155,25 @@ def __init__(self, path, force=False): #args for the func
 
 that class is just defining the logic of what is a repo on our git interpretation.
 
-// TO DO: define repo_path func between 3.1 and 3.2
+## I discovered something
+
+i know i know all the above would be lost. but if you are as lost as i am you are goint to thank me as i learn more by literally imploding everything jajaj.
+now everything is properly setted. but i didnt really wasnt understanding the written guide so the REAL men came in clutch check him out [here](https://youtu.be/g2cfjDENSyw?si=Bm-cpjJJ9pBITMLa)
+now at this moment (27/feb/2026) i had to sort of start over because i was not really understanding the parsing but ill explain
+
+we first check arguments to parse from the shell as users input defining global variables that will be used by our main program as follows ->
+
+```python
+parser =argparse.ArgumentParser(description="Describe your poroject here")
+```
+
+and then telling the program our command will support sub commands. I know i know. basic programming but you know im colombian and i have what is normally called (divine intellect) so yes. im basically a monkey but finded out whats important.
+Then we defined what will happen when not arguments entered (basic logic)
+
+```python
+  if not args.command:
+    parser.print_help()
+    return
+```
+
+it might sound like i am very very stupid. But i didnt knew `args.command` uses `command` which we defined on the snippet `subparsers = parser.add_subparser(dest="command") #<- yes that command`
