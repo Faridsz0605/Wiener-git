@@ -24,7 +24,7 @@ But actually i dont know shit. Im from Colombia and i just want to contribute an
 
 ## Getting started
 
-As i waid earlier you whould go to the one who write this (and literally knows) [here](https://wyag.thb.lt/)
+As i said earlier you whould go to the one who write this (and literally knows) [here](https://wyag.thb.lt/)
 But if i repeated that 2 times and you still here maybe i can help with something or you just a lazy head dont want to go to a strange link. which i get it.
 
 \*\*> [!IMPORTANT]
@@ -157,7 +157,7 @@ that class is just defining the logic of what is a repo on our git interpretatio
 
 ## I discovered something
 
-i know i know all the above would be lost. but if you are as lost as i am you are goint to thank me as i learn more by literally imploding everything jajaj.
+i know i know all the above would be lost. But if you are as lost as i am you are goin to thank me as i learn more by literally imploding everything jajaj.
 now everything is properly setted. but i didnt really wasnt understanding the written guide so the REAL men came in clutch check him out [here](https://youtu.be/g2cfjDENSyw?si=Bm-cpjJJ9pBITMLa)
 now at this moment (27/feb/2026) i had to sort of start over because i was not really understanding the parsing but ill explain
 
@@ -177,3 +177,28 @@ Then we defined what will happen when not arguments entered (basic logic)
 ```
 
 it might sound like i am very very stupid. But i didnt knew `args.command` uses `command` which we defined on the snippet `subparsers = parser.add_subparser(dest="command") #<- yes that command`
+
+## tiny update :D
+
+I didnt worked on this repo for a bit. Due to unexpected unemployment haha although im here again.
+Now for the record we have already implemented `init` and `add`. defining the parsers so the CLI can support those arguments (commands).
+now we will create a function for the `repo` class remember it is an object so we need to define the methods so we can implement them recursively. the `git add` command checks if the file exists recursively for directories which is necesary for supporting `git add` to commands.
+now within the repo class i will define `add_paths` function which will be used on a loop to add paths to the index.
+
+```python
+    def add_paths(self, path: str) -> None:
+        """checks if path exists and define if file or directory"""
+        full_path = self.path / path
+        
+        if not full_path.exists():
+            raise FileNotFoundError(f"path not {path} found")
+        if full_path.is_file():
+            self.add_file(full_path)
+        elif full_path.is_dir():
+            self.add_directory(full_path)
+        else:
+            raise ValueError(f"unknown path type {path}")
+```
+
+the logic its pretty simple because we are not creating every method from scratch. thats why we import the `pathlib` module so it includes the `path` class. which includes methods like `is file` so if `its file` we simply call the `add_file` and `add_directory` methods. which we will create.
+

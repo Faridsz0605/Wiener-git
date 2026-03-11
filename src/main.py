@@ -1,7 +1,7 @@
 import argparse
 import json
-import sys
 import os
+import sys
 from pathlib import Path
 
 #
@@ -18,26 +18,26 @@ class Repo:
         ).resolve()  # checks initialize a repo on working directory the method resolve() pass an absoulute path.
 
         ## "wigit" is same as .git folder. the following files will be the same as git/
-        self.git_dir = self.path / ".wigit"
+        self.wgit_dir = self.path / ".wigit"
 
-        self.obj_dir = self.git_dir / "objects"
+        self.obj_dir = self.wgit_dir / "objects"
 
         # refs for branch names and pointers to dirs
-        self.refs_dir = self.git_dir / "refs"
+        self.refs_dir = self.wgit_dir / "refs"
 
         self.heads_dir = self.refs_dir / "heads"
 
-        self.head_file = self.git_dir / "W_HEAD"
+        self.head_file = self.wgit_dir / "W_HEAD"
 
-        self.index_file = self.git_dir / "index"
+        self.index_file = self.wgit_dir / "index"
 
     def init(self) -> bool:
-        if self.git_dir.exists():
+        if self.wgit_dir.exists():
             return False
 
         # creation of base dirs
 
-        self.git_dir.mkdir()
+        self.wgit_dir.mkdir()
         self.obj_dir.mkdir()
         self.refs_dir.mkdir()
         self.heads_dir.mkdir()
@@ -47,11 +47,31 @@ class Repo:
 
         self.index_file.write_text(json.dumps({}, indent=2))
 
-        print(f"initialize empty wiener-git repo in {self.git_dir}")
+        print(f"initialize empty wiener-git repo in {self.wgit_dir}")
         return True
+    
+    def add_file(self, path:str) -> None:
+        """adds file to index used on add_paths"""
+        
+    
+    
+    def add_paths(self, path: str) -> None:
+        """checks if path exists and define if file or directory"""
+        full_path = self.path / path
+        
+        if not full_path.exists():
+            raise FileNotFoundError(f"path not {path} found")
+        if full_path.is_file():
+            self.add_file(full_path)
+        elif full_path.is_dir():
+            self.add_directory(full_path)
+        else:
+            raise ValueError(f"unknown path type {path}")
 
 
 ## important lybraries imported each explained on [README](./yap.md)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Wiener-git its a git clone written on python to understand how it works under the hood :)"
@@ -65,19 +85,24 @@ def main():
     add_parser = subparsers.add_parser("wiadd", help="add files to the existing repo")
     push_parser = subparsers.add_parser("wipush", help="push files to remote")
 
+    add_parser.add_argument("paths", nargs="+", help="paths and directories to add.")
     args = parser.parse_args()
 
     if not args.command:
         parser.print_help()
         return
 
+    repo = Repo()
     try:
         if args.command == "winit":
-            repo = Repo()
-            repo.init()
-        if not repo.init():
-            print("already on a wiener repo :)")
-            return
+            if not repo.init():
+                print("already on a wiener repo :)")
+                return
+        elif args.command == "wiadd":
+            if not repo.wgit_dir.exists():
+                print("already on a wiener repo :)")
+                return
+            print(args.paths)
     except Exception as error:
         print(f"error:{error}")
         sys.exit(1)
