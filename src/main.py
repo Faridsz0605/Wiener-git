@@ -1,7 +1,9 @@
 import argparse
+import hashlib
 import json
 import os
 import sys
+import zlib
 from pathlib import Path
 
 #
@@ -9,6 +11,32 @@ from pathlib import Path
 #     import grp, pwd
 # except ModuleNotFoundError:
 #     pass
+
+
+class WiObject:
+    def __init__(self, obj_type: str, content: bytes) -> None:
+        self.type = obj_type
+        self.content = content
+
+    def hash(self) -> str:
+        """hash file informationn to byte w/o losing info"""
+        header = f"{self.type} {len(self.content)}\0".encode()
+        return hashlib.sha1(header + self.content).hexdigest()
+
+    def serialize(self) -> bytes:
+        """ensure lossless compression"""
+        header = f"{self.type} {len(self.content)}\0".encode()
+        return zlib.compress(header + self.content)
+
+    @classmethod
+    def deserealization(cls, data: bytes) -> "WiObject":
+        decompressed = zlib.decompress(data)
+        null_idx = decompressed.find(b"\0")
+        header = decompressed[:null_idx]
+        content = decompressed[null_idx + 1 :]
+
+        obj_type, _ = header.split(" ")
+        return cls(obj_type, content)
 
 
 class Repo:
@@ -49,16 +77,18 @@ class Repo:
 
         print(f"initialize empty wiener-git repo in {self.wgit_dir}")
         return True
-    
-    def add_file(self, path:str) -> None:
+
+    def add_file(self, path: str) -> None:
         """adds file to index used on add_paths"""
-        
-    
-    
+        full_path = self.path / path
+        if not full_path.exists():
+            raise FileNotFoundError(f"path not {path} found")
+        pass
+
     def add_paths(self, path: str) -> None:
         """checks if path exists and define if file or directory"""
         full_path = self.path / path
-        
+
         if not full_path.exists():
             raise FileNotFoundError(f"path not {path} found")
         if full_path.is_file():

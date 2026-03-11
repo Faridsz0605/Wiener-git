@@ -22,7 +22,7 @@ Yes. I ask to myself i need to understand github. So my unemployed ass decided. 
 So this is my version as a computer rat. on python. lowkenuetly i wanted to write it on C and then on rust.
 But actually i dont know shit. Im from Colombia and i just want to contribute and document my trip so this is me getting started.
 
-## Getting started
+## Getting started (skipabble [NOT RECOMMENDED])
 
 As i said earlier you whould go to the one who write this (and literally knows) [here](https://wyag.thb.lt/)
 But if i repeated that 2 times and you still here maybe i can help with something or you just a lazy head dont want to go to a strange link. which i get it.
@@ -202,3 +202,47 @@ now within the repo class i will define `add_paths` function which will be used 
 
 the logic its pretty simple because we are not creating every method from scratch. thats why we import the `pathlib` module so it includes the `path` class. which includes methods like `is file` so if `its file` we simply call the `add_file` and `add_directory` methods. which we will create.
 
+## Now its time >:) (Skipabble)
+
+we are going to define the objects our git clone will track. 
+
+defining (You can skip this part it just helps me to understand how git works)
+
+there are 4 types of objects tracked by git:
+
+- Blobs (binary large objects): i swear im not this retarded but always asked myself what this means and it has a lot of sense.
+- Commits: yes this are saved as an object.
+- Trees: used on commits [as of now the tuto dont explain.]
+- tags [Not used/defined]
+
+now for the creation of the `add_file` function it will be divided on 4 parts/steps.
+
+- Read file content.
+- hash it and convert to BLOB from content.
+- store on database which is `.git/objects/`
+- Update index.
+
+Now for the hashing part of the BLOB it is better (at least as said on tuto)
+to define and create a BLOB individual class. so it has its own way to arange and hash and dont mess around with our `repo` class which is the main class we are creating.
+
+# Inheritance
+
+now all this yap makes sense. the 3 main objects listed above have some common atributes. we will use POO for that and create a`father` called `gitobjects` class in mi case `wienerobjects` obvious. and inherit hashing functions to the 3 objects we are going to support on clone.
+
+> [!NOTE]
+> hashing will follow SHA-1 so it will be defined on the `git object` class so every object can inherit it.
+class go as follows:
+
+```python
+class WiObject:
+    def __init__(self, obj_type: str, content: bytes) -> None:
+        self.type = obj_type
+        self.content = content
+```
+
+then the first func we must define is hashing with the structure explained on tuto using:
+
+```markdown
+# <type><size>\0 <content>
+```
+passing the tipe, size of the file, then `\0` which i dont get. it says null operator (dont get it) then the content which would go compressed.
