@@ -1,10 +1,13 @@
+from __future__ import annotations
+
 import argparse
 import hashlib
 import json
-import os
 import sys
+import time
 import zlib
 from pathlib import Path
+from typing import Dict, List, Optional, Tuple
 
 #
 # try:
@@ -14,7 +17,7 @@ from pathlib import Path
 
 
 class WiObject:
-    def __init__(self, obj_type: str, content: bytes) -> None:
+    def __init__(self, obj_type: str, content: bytes):
         self.type = obj_type
         self.content = content
 
@@ -29,14 +32,24 @@ class WiObject:
         return zlib.compress(header + self.content)
 
     @classmethod
-    def deserealization(cls, data: bytes) -> "WiObject":
+    def deserealization(cls, data: bytes) -> WiObject:
         decompressed = zlib.decompress(data)
         null_idx = decompressed.find(b"\0")
-        header = decompressed[:null_idx]
+        header = decompressed[:null_idx].decode()
         content = decompressed[null_idx + 1 :]
 
         obj_type, _ = header.split(" ")
+
         return cls(obj_type, content)
+
+
+class Blob(WiObject):
+    def __init__(self, obj_type: str, content: bytes) -> None:
+        super().__init__("blob", content)
+
+    # set getter func for blob (if needed)
+    def get_content(self) -> bytes:
+        return self.content
 
 
 class Repo:
@@ -78,11 +91,24 @@ class Repo:
         print(f"initialize empty wiener-git repo in {self.wgit_dir}")
         return True
 
+    def store_objects(self, obj: WiObject) -> str:
+        obj_hash = obj.hash()
+        obj_dir = self.obj_dir / obj_hash[:2]
+        obj_file = obj_dir / obj_hash[2:]
+        if not obj_file.exists():
+            obj_dir.mkdir(exist_ok=True)
+            obj_file.write_bytes(obj.serialize())
+        return obj_hash
+
     def add_file(self, path: str) -> None:
         """adds file to index used on add_paths"""
         full_path = self.path / path
         if not full_path.exists():
             raise FileNotFoundError(f"path not {path} found")
+        # set content (read file)
+        content = full_path.read_bytes()
+        # create blob
+        blob = Blob(content)
         pass
 
     def add_paths(self, path: str) -> None:
