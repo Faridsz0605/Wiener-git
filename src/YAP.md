@@ -246,3 +246,35 @@ then the first func we must define is hashing with the structure explained on tu
 # <type><size>\0 <content>
 ```
 passing the tipe, size of the file, then `\0` which i dont get. it says null operator (dont get it) then the content which would go compressed.
+
+## blob and standard properties
+
+today its march-12-2026 im finishing this project no matter what. hahah its been a big journey full of knowledge.
+Now quit the yapping.
+
+we already defined  the objects dir,hash and base classes. now we need to update the index which for now its defined as an empty dict `{}` on the `index` dict we will use the hash as the key for the value. what i mean is the index will track the changes using the hash to identify de documennt/ object we are updating.
+Now after we already defined blobs and index as a dict, we must create a func to load the index and handle that json.
+
+```python
+    def load_index(self) -> Dict[str, str]:
+        if not self.index_file.exists():
+            return {}
+            
+            try:
+                return json.loads(self.index_file.read_text())
+            except:
+                return{}
+```
+
+and then use it on the `add_file` method so it organize the index as a standard json/dictionary.
+e.g:
+```json
+{
+  hello.txt : "klsadjfkjsa" // <- hash
+}
+```
+
+then we must create the func to safe it on the index file we already created and loaded.
+
+## commit/tree creation
+ Now it is time for the real deal. as tree is a kind of object using for git hieratrchization. so it is necesary to organize the index file. I include some code here and there but mainly we still on the index saving part. As said above this is pretty much a record file. not a follow along documentation.
